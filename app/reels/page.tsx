@@ -77,6 +77,7 @@ export default function ReelsPage() {
             
           </div>
           <aside className="mb-2 flex shrink-0 flex-col items-center gap-5">
+            <Link href={"/chat/"+person.id} aria-label={"Say hello to "+person.name} className="flex h-12 w-12 items-center justify-center rounded-full border border-[#f0a6b0]/70 bg-black/35 text-[#f0a6b0] shadow-lg backdrop-blur-md"><MessageCircle size={22}/></Link>
             <button onClick={()=>like(person.id)} aria-label="Like profile" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><Heart size={27} fill={liked.includes(person.id)?"white":"none"} strokeWidth={2.1}/><span className="text-[10px] font-bold">{liked.includes(person.id)?"Liked":"Like"}</span></button>
             <button onClick={()=>{setCommentFor(person.id);}} aria-label="Open comments" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><MessageCircle size={26}/><span className="text-[10px] font-bold">{(comments[person.id]??[]).length}</span></button>
             <button onClick={()=>share(person.name)} aria-label="Share profile" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><Share2 size={24}/><span className="text-[10px] font-bold">Share</span></button>
