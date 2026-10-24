@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { people } from "@/lib/demo-data";
-import { Heart, MessageCircle, Share2, Bookmark, Volume2, VolumeX, Send, Sparkles, Plus, Compass, Clapperboard, UserRound, ArrowLeft } from "lucide-react";
+import { Heart, MessageCircle, Share2, Bookmark, Volume2, VolumeX, Send, Sparkles, Compass, Clapperboard, UserRound, ArrowLeft } from "lucide-react";
+import { useSounds } from "@/components/SoundProvider";
 
 export default function ReelsPage() {
-  const feedRef = useRef<HTMLDivElement | null>(null);
+  const feedRef = useRef<HTMLDivElement | null>(null);\n  const reelAudio = useRef<HTMLAudioElement | null>(null);\n  const sounds = useSounds();
   const [liked,setLiked] = useState<string[]>(["isha"]);
   const [saved,setSaved] = useState<string[]>([]);
   const [muted,setMuted] = useState(true);
@@ -35,7 +36,7 @@ export default function ReelsPage() {
   function toggle(id:string,setter:(v:string[])=>void,current:string[]) {
     setter(current.includes(id)?current.filter(x=>x!==id):[...current,id]);
   }
-  function like(id:string) { setLiked(v=>v.includes(id)?v.filter(x=>x!==id):[...v,id]); }
+  function like(id:string) { sounds.click(); setLiked(v=>v.includes(id)?v.filter(x=>x!==id):[...v,id]); }\n  async function toggleSound(){ const audio=reelAudio.current; if(!audio){setMuted(v=>!v);return;} if(muted){setMuted(false);try{await audio.play();}catch{setToast("Tap sound again to start audio.");}}else{setMuted(true);audio.pause();} }
   function share(name:string) {
     const text="Meet "+name+" on Spark & Vouch";
     if(navigator.share) navigator.share({title:"Spark & Vouch",text}).catch(()=>{});
@@ -53,14 +54,14 @@ export default function ReelsPage() {
   }
 
   return <main className="reels-immersive fixed inset-0 z-50 h-[100dvh] w-full overflow-hidden bg-black text-white">
-    <div ref={feedRef} className="reels-scroll absolute inset-0 h-full w-full snap-y snap-mandatory overflow-y-auto overscroll-y-contain" aria-label="Full-screen profile reels">
+    <audio ref={reelAudio} src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop preload="none" muted={muted} />\n    <div ref={feedRef} className="reels-scroll absolute inset-0 h-full w-full snap-y snap-mandatory overflow-y-auto overscroll-y-contain" aria-label="Full-screen profile reels">
       {reels.map((person,i)=><article key={person.id} data-reel data-index={i} onDoubleClick={()=>{if(!liked.includes(person.id))like(person.id);}} className="relative isolate h-[100dvh] min-h-[100dvh] w-full snap-start snap-always overflow-hidden bg-neutral-950">
         <img src={person.image} alt={person.name+" profile moment"} draggable={false} className="absolute inset-0 -z-20 h-full w-full select-none object-cover object-center" loading={i<2?"eager":"lazy"}/>
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/45 via-transparent via-40% to-black/90"/>
         <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-5 pb-10 pt-[max(env(safe-area-inset-top),18px)]">
           <Link href="/discover" aria-label="Back to discover" className="flex h-9 w-9 items-center justify-center rounded-full bg-black/25 backdrop-blur-md"><ArrowLeft size={19}/></Link>
           <div className="flex items-center gap-2 text-[13px] font-extrabold tracking-[-.04em]">spark <span className="text-white/50">&</span> vouch <Sparkles size={13}/></div>
-          <button onClick={()=>setMuted(v=>!v)} aria-label={muted?"Sound is off":"Sound is on"} className="flex h-9 w-9 items-center justify-center rounded-full bg-black/25 backdrop-blur-md">{muted?<VolumeX size={18}/>:<Volume2 size={18}/>}</button>
+          <button onClick={toggleSound} aria-label={muted?"Turn reel sound on":"Turn reel sound off"} className="flex h-9 w-9 items-center justify-center rounded-full bg-black/25 backdrop-blur-md">{muted?<VolumeX size={18}/>:<Volume2 size={18}/>}</button>
         </div>
 
         <div className="absolute bottom-[calc(76px+env(safe-area-inset-bottom))] left-0 right-0 z-10 flex items-end gap-3 px-4 sm:px-8">
@@ -73,9 +74,9 @@ export default function ReelsPage() {
           </div>
           <aside className="mb-2 flex shrink-0 flex-col items-center gap-5">
             <button onClick={()=>like(person.id)} aria-label="Like profile" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><Heart size={27} fill={liked.includes(person.id)?"white":"none"} strokeWidth={2.1}/><span className="text-[10px] font-bold">{liked.includes(person.id)?"Liked":"Like"}</span></button>
-            <button onClick={()=>setCommentFor(person.id)} aria-label="Open comments" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><MessageCircle size={26}/><span className="text-[10px] font-bold">{(comments[person.id]??[]).length}</span></button>
+            <button onClick={()=>{sounds.click();setCommentFor(person.id);}} aria-label="Open comments" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><MessageCircle size={26}/><span className="text-[10px] font-bold">{(comments[person.id]??[]).length}</span></button>
             <button onClick={()=>share(person.name)} aria-label="Share profile" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><Share2 size={24}/><span className="text-[10px] font-bold">Share</span></button>
-            <button onClick={()=>toggle(person.id,setSaved,saved)} aria-label="Save profile" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><Bookmark size={23} fill={saved.includes(person.id)?"white":"none"}/><span className="text-[10px] font-bold">{saved.includes(person.id)?"Saved":"Save"}</span></button>
+            <button onClick={()=>{sounds.click();toggle(person.id,setSaved,saved);}} aria-label="Save profile" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><Bookmark size={23} fill={saved.includes(person.id)?"white":"none"}/><span className="text-[10px] font-bold">{saved.includes(person.id)?"Saved":"Save"}</span></button>
             <div className="mt-1 h-9 w-9 overflow-hidden rounded-xl border border-white/30"><img src={person.image} alt="" className="h-full w-full object-cover"/></div>
           </aside>
         </div>
