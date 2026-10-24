@@ -64,7 +64,7 @@ export default function ReelsPage() {
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/45 via-transparent via-40% to-black/90"/>
         <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-5 pb-10 pt-[max(env(safe-area-inset-top),18px)]">
           <Link href="/discover" aria-label="Back to discover" className="flex h-9 w-9 items-center justify-center rounded-full bg-black/25 backdrop-blur-md"><ArrowLeft size={19}/></Link>
-          <div className="flex items-center gap-2 text-[13px] font-extrabold tracking-[-.04em]">spark <span className="text-white/50">&</span> vouch <Sparkles size={13}/></div>
+          <div className="flex items-center gap-2 text-[13px] font-extrabold tracking-[-.04em] text-[#f0a6b0]">Cherry <span className="text-[9px] italic font-semibold text-white/65">by Harsh and Sam</span></div>
           <button onClick={toggleSound} aria-label={muted?"Turn reel sound on":"Turn reel sound off"} className="flex h-9 w-9 items-center justify-center rounded-full bg-black/25 backdrop-blur-md">{muted?<VolumeX size={18}/>:<Volume2 size={18}/>}</button>
         </div>
 
@@ -74,9 +74,10 @@ export default function ReelsPage() {
             <div className="flex items-center gap-3"><img src={person.image} alt="" className="h-11 w-11 rounded-full border border-white/50 object-cover"/><div className="min-w-0"><h1 className="text-[22px] font-extrabold leading-tight tracking-[-.055em]">{person.name}, {person.age}</h1><p className="mt-0.5 text-[11px] text-white/70">{person.city} · {person.distance}</p></div><button onClick={()=>setToast("Demo profile · verified status is not enabled")} className="ml-1 rounded-full border border-white/50 px-3 py-1.5 text-[10px] font-bold">View</button></div>
             <p className="mt-3 max-w-md text-[13px] leading-5 text-white/90">{person.caption} <span className="text-white/65">{person.bio}</span></p>
             <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">{person.tags.slice(0,3).map(tag=><span key={tag} className="text-[10px] font-semibold text-white/80">#{tag.replaceAll(" ","")}</span>)}</div>
-            <div className="mt-4 flex gap-2"><button onClick={()=>like(person.id)} className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-xs font-extrabold text-black active:scale-95"><Heart size={16} fill={liked.includes(person.id)?"currentColor":"none"}/>{liked.includes(person.id)?"Liked":"Like"}</button><Link href={"/chat/"+person.id} className="inline-flex h-11 items-center gap-2 rounded-full border border-white/45 bg-black/25 px-4 text-xs font-bold backdrop-blur-md"><MessageCircle size={15}/> Say hello</Link></div>
+            
           </div>
           <aside className="mb-2 flex shrink-0 flex-col items-center gap-5">
+            <Link href={"/chat/"+person.id} aria-label={"Say hello to "+person.name} className="flex h-12 w-12 items-center justify-center rounded-full border border-[#f0a6b0]/70 bg-black/35 text-[#f0a6b0] shadow-lg backdrop-blur-md"><MessageCircle size={22}/></Link>
             <button onClick={()=>like(person.id)} aria-label="Like profile" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><Heart size={27} fill={liked.includes(person.id)?"white":"none"} strokeWidth={2.1}/><span className="text-[10px] font-bold">{liked.includes(person.id)?"Liked":"Like"}</span></button>
             <button onClick={()=>{setCommentFor(person.id);}} aria-label="Open comments" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><MessageCircle size={26}/><span className="text-[10px] font-bold">{(comments[person.id]??[]).length}</span></button>
             <button onClick={()=>share(person.name)} aria-label="Share profile" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><Share2 size={24}/><span className="text-[10px] font-bold">Share</span></button>

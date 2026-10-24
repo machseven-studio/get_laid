@@ -20,9 +20,8 @@ export default function DiscoverPage() {
   };
   const current = useMemo(() => person,[person]);
   return <AppShell>
-    <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-      <div><p className="eyebrow">YOUR NEXT CHAPTER</p><h1 className="display-title mt-2">Meet someone <span className="text-white/45">different.</span></h1><p className="mt-3 text-sm text-white/45">Good chemistry starts with being curious.</p></div>
-      <button onClick={()=>setFilter(filter==="For you"?"Nearby":"For you")} className="inline-flex items-center gap-2 pb-1 text-xs font-semibold text-white/65 hover:text-white"><SlidersHorizontal size={15}/>{filter}</button>
+    <div className="mb-6 flex justify-end">
+      <button onClick={()=>setFilter(filter==="For you"?"Nearby":"For you")} className="inline-flex items-center gap-2 text-xs font-semibold text-white/65 hover:text-white"><SlidersHorizontal size={15}/>{filter}</button>
     </div>
     <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(260px,.72fr)] lg:items-center">
       <div className="relative min-h-[440px] overflow-hidden rounded-[2rem] bg-zinc-900 sm:min-h-[580px]">
