@@ -7,7 +7,9 @@ import { Heart, MessageCircle, Share2, Bookmark, Volume2, VolumeX, Send, Sparkle
 import { useSounds } from "@/components/SoundProvider";
 
 export default function ReelsPage() {
-  const feedRef = useRef<HTMLDivElement | null>(null);\n  const reelAudio = useRef<HTMLAudioElement | null>(null);\n  const sounds = useSounds();
+  const feedRef = useRef<HTMLDivElement | null>(null);
+  const reelAudio = useRef<HTMLAudioElement | null>(null);
+  const sounds = useSounds();
   const [liked,setLiked] = useState<string[]>(["isha"]);
   const [saved,setSaved] = useState<string[]>([]);
   const [muted,setMuted] = useState(true);
@@ -36,7 +38,8 @@ export default function ReelsPage() {
   function toggle(id:string,setter:(v:string[])=>void,current:string[]) {
     setter(current.includes(id)?current.filter(x=>x!==id):[...current,id]);
   }
-  function like(id:string) { sounds.click(); setLiked(v=>v.includes(id)?v.filter(x=>x!==id):[...v,id]); }\n  async function toggleSound(){ const audio=reelAudio.current; if(!audio){setMuted(v=>!v);return;} if(muted){setMuted(false);try{await audio.play();}catch{setToast("Tap sound again to start audio.");}}else{setMuted(true);audio.pause();} }
+  function like(id:string) { sounds.click(); setLiked(v=>v.includes(id)?v.filter(x=>x!==id):[...v,id]); }
+  async function toggleSound(){ const audio=reelAudio.current; if(!audio){setMuted(v=>!v);return;} if(muted){setMuted(false);try{await audio.play();}catch{setToast("Tap sound again to start audio.");}}else{setMuted(true);audio.pause();} }
   function share(name:string) {
     const text="Meet "+name+" on Spark & Vouch";
     if(navigator.share) navigator.share({title:"Spark & Vouch",text}).catch(()=>{});
@@ -54,7 +57,8 @@ export default function ReelsPage() {
   }
 
   return <main className="reels-immersive fixed inset-0 z-50 h-[100dvh] w-full overflow-hidden bg-black text-white">
-    <audio ref={reelAudio} src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop preload="none" muted={muted} />\n    <div ref={feedRef} className="reels-scroll absolute inset-0 h-full w-full snap-y snap-mandatory overflow-y-auto overscroll-y-contain" aria-label="Full-screen profile reels">
+    <audio ref={reelAudio} src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop preload="none" muted={muted} />
+    <div ref={feedRef} className="reels-scroll absolute inset-0 h-full w-full snap-y snap-mandatory overflow-y-auto overscroll-y-contain" aria-label="Full-screen profile reels">
       {reels.map((person,i)=><article key={person.id} data-reel data-index={i} onDoubleClick={()=>{if(!liked.includes(person.id))like(person.id);}} className="relative isolate h-[100dvh] min-h-[100dvh] w-full snap-start snap-always overflow-hidden bg-neutral-950">
         <img src={person.image} alt={person.name+" profile moment"} draggable={false} className="absolute inset-0 -z-20 h-full w-full select-none object-cover object-center" loading={i<2?"eager":"lazy"}/>
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/45 via-transparent via-40% to-black/90"/>
