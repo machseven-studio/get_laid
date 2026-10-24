@@ -12,7 +12,7 @@ export async function GET(request: Request) {
   const supabase = createServerClient(supabaseUrl, anonKey, {
     cookies: {
       getAll() { return request.headers.get("cookie")?.split(";").map(v => { const i=v.indexOf("="); return {name:v.slice(0,i).trim(),value:decodeURIComponent(v.slice(i+1).trim())}; }) ?? []; },
-      setAll(cookies) { cookies.forEach(({name,value,options}) => response.cookies.set(name,value,options)); }
+      setAll(cookies: Array<{ name: string; value: string; options?: Parameters<typeof response.cookies.set>[2] }>) {\n        cookies.forEach(({ name, value, options }) => response.cookies.set(name, value, options));\n      }
     }
   });
   const { error } = await supabase.auth.exchangeCodeForSession(code);
