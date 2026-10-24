@@ -4,7 +4,10 @@ A mobile-first, voice-first dating app concept built with Next.js 14, TypeScript
 
 ## Pages
 - `/` — editorial landing page
-- `/signup` — four-step email account creation and detailed profile questionnaire\n- `/login` — email/password sign-in\n- `/terms` and `/privacy` — draft legal pages requiring professional review\n- `/onboarding` — lightweight intro flow
+- `/signup` — four-step email account creation and detailed profile questionnaire
+- `/login` — email/password sign-in
+- `/terms` and `/privacy` — draft legal pages requiring professional review
+- `/onboarding` — lightweight intro flow
 - `/discover` — profile discovery, like/pass actions, voice-intro demo
 - `/reels` — full-screen snap-scrolling profile feed, likes/comments/save/share, optional demo music
 - `/likes` — liked profiles
