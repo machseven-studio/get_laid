@@ -1,20 +1,28 @@
 # Spark & Vouch
 
-A Next.js starter for a voice-first social discovery experience.
+A mobile-first, voice-first dating app concept built with Next.js 14, TypeScript, Tailwind CSS, Framer Motion, and Supabase.
 
-## Stack
-- Next.js 14 / React / TypeScript
-- Tailwind CSS
-- Framer Motion
-- Supabase (auth and database)
+## Pages
+- `/` — editorial landing page
+- `/onboarding` — three-step profile setup flow
+- `/discover` — profile discovery, like/pass actions, voice-intro demo
+- `/likes` — liked profiles
+- `/matches` — search and match list
+- `/chat/[matchId]` — interactive demo chat
+- `/profile` — editable demo profile
 
-## Getting started
-1. Install Node.js 18.17 or later.
+## Run locally
+1. Use Node.js 18.17+.
 2. Run `npm install`.
-3. Copy `.env.example` to `.env.local` and configure the Supabase URL and anon key.
+3. Copy `.env.example` to `.env.local` and configure Supabase values if testing Supabase features.
 4. Run `npm run dev`.
 
-## Database
-Review `supabase/schema.sql` and test it in a non-production Supabase project before applying it. This is a starter scaffold, not a production security review. Matching, messaging, storage permissions, and authorization RPCs must be fully implemented and tested before launch.
+## Render
+Build command: `npm install && npm run build`
+Start command: `npm start`
+Deploy branch: `feat/spark-vouch-starter` until the pull request is reviewed.
 
-Never commit `.env.local` or Supabase service-role keys.
+## Prototype limitations
+This is a pitch/demo prototype. Profile data, likes, matches, and chat are demo/local state, not a live dating service. Authentication, moderation, reporting/blocking, privacy controls, real-time messaging, database write RPCs, audio storage policies, consent/safety flows, and automated tests are required before a public launch. `supabase/schema.sql` is an initial scaffold and must be reviewed and tested in a non-production project first.
+
+Never commit `.env.local`, service-role keys, or private credentials.
