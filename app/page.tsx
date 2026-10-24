@@ -1,12 +1,59 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowRight, AudioLines, Heart, Sparkles } from "lucide-react";
+import { useEffect } from "react";
+import { ArrowRight, AudioLines, Sparkles } from "lucide-react";
 
 export default function HomePage() {
-  const steps = [["01","Listen first","Meet the personality behind the profile."],["02","Find your spark","Make the first move when it feels right."],["03","Build something real","Let connection grow at a human pace."]];
-  return <main className="min-h-screen overflow-hidden bg-black text-white">
-    <header className="mx-auto flex h-[76px] max-w-6xl items-center justify-between px-5 sm:px-8"><Link href="/" className="flex items-center gap-2.5 text-[15px] font-extrabold tracking-[-.05em]"><span className="grid h-8 w-8 place-items-center rounded-full bg-white text-black"><Sparkles size={16}/></span>spark <span className="text-white/40">&</span> vouch</Link><div className="flex items-center gap-5"><Link href="/signup" className="hidden text-xs font-semibold text-white/55 hover:text-white sm:block">Create your profile</Link><Link href="/discover" className="rounded-full bg-white px-5 py-2.5 text-xs font-extrabold text-black transition hover:bg-white/85">Explore the app <ArrowRight className="ml-1 inline" size={13}/></Link></div></header>
-    <section className="relative mx-auto grid min-h-[calc(100dvh-76px)] max-w-6xl items-center gap-12 px-5 pb-16 pt-10 sm:px-8 lg:grid-cols-[1.05fr_.95fr]"><div className="absolute -right-40 top-20 h-[420px] w-[420px] rounded-full bg-white/[0.035] blur-[100px]"/><div className="relative z-10 py-8"><p className="eyebrow flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-white"/> A different kind of dating app</p><h1 className="mt-7 max-w-3xl text-[clamp(3.7rem,9vw,7.5rem)] font-extrabold leading-[.88] tracking-[-.085em]">Chemistry is<br/>more than a<br/><span className="text-white/40">swipe.</span></h1><p className="mt-8 max-w-md text-base leading-7 text-white/55 sm:text-lg">Meet the voice, the energy, the person behind the profile. Less performance. More real connection.</p><div className="mt-9 flex flex-wrap items-center gap-4"><Link href="/signup" className="rounded-full bg-white px-7 py-4 text-sm font-extrabold text-black transition hover:scale-[1.02]">Find your spark <ArrowRight className="ml-2 inline" size={15}/></Link><Link href="/discover" className="px-3 py-3 text-sm font-semibold text-white/65 transition hover:text-white">Take a look around</Link></div><div className="mt-14 flex items-center gap-4 border-t border-white/10 pt-5"><div className="flex -space-x-2">{["#777","#aaa","#444","#ddd"].map((c,i)=><span key={i} style={{backgroundColor:c}} className="h-7 w-7 rounded-full border-2 border-black"/>)}</div><p className="text-xs text-white/40">Built for conversations that go somewhere.</p></div></div>
-    <div className="relative mx-auto w-full max-w-[440px] py-8"><div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-zinc-900"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=85" alt="Portrait representing a Spark & Vouch member" className="absolute inset-0 h-full w-full object-cover object-center opacity-90"/><div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/5"/><div className="absolute left-5 top-5 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.2em]"><span className="h-2 w-2 rounded-full bg-white"/> Your next connection</div><div className="absolute inset-x-0 bottom-0 p-6"><p className="eyebrow text-white/65">A little more than a photo</p><h2 className="mt-2 text-4xl font-extrabold tracking-[-.06em]">Hear the story.</h2><p className="mt-2 max-w-xs text-sm leading-6 text-white/70">A voice note can say what a thousand pictures never could.</p><div className="mt-6 flex items-center gap-3"><span className="grid h-12 w-12 place-items-center rounded-full bg-white text-black"><AudioLines size={20}/></span><div className="flex-1"><div className="flex h-7 items-center gap-1">{[3,5,8,12,7,14,9,5,11,6,13,7,4,9,12,6].map((h,i)=><span key={i} style={{height:h*1.5}} className="w-1 rounded-full bg-white/80"/>)}</div><p className="text-[10px] text-white/55">A 15-second introduction</p></div><Heart size={20}/></div></div></div><div className="mt-5 flex justify-between text-[10px] font-semibold uppercase tracking-[.22em] text-white/30"><span>Listen first</span><span>Connect honestly</span><span>Reveal together</span></div></div></section>
-    <section className="mx-auto grid max-w-6xl gap-8 border-t border-white/10 px-5 py-16 sm:grid-cols-3 sm:px-8">{steps.map(([n,t,d])=><div key={n} className="flex gap-5"><span className="eyebrow pt-1">{n}</span><div><h3 className="text-lg font-extrabold tracking-tight">{t}</h3><p className="mt-2 max-w-xs text-sm leading-6 text-white/45">{d}</p></div></div>)}</section><footer className="mx-auto flex max-w-6xl justify-between border-t border-white/10 px-5 py-6 text-[10px] text-white/30 sm:px-8"><span>SPARK & VOUCH</span><span>Concept prototype · Demo data</span></footer>
-  </main>;
+  useEffect(() => {
+    document.title = "Cherry — by Harsh and Sam";
+  }, []);
+
+  return (
+    <main className="cherry-home min-h-screen overflow-hidden bg-black text-white">
+      <header className="relative z-10 mx-auto flex h-[82px] max-w-6xl items-center justify-between px-5 sm:px-8">
+        <Link href="/" className="cherry-wordmark" aria-label="Cherry home">
+          <span className="cherry-mark"><Sparkles size={17} /></span>
+          <span className="cherry-name">Cherry</span>
+          <span className="cherry-byline">by Harsh and Sam</span>
+        </Link>
+        <div className="flex items-center gap-5">
+          <Link href="/login" className="hidden text-xs font-bold text-white/65 transition hover:text-white sm:block">Sign in</Link>
+          <Link href="/signup" className="cherry-cta">Create account <ArrowRight className="ml-1 inline" size={14}/></Link>
+        </div>
+      </header>
+
+      <section className="cherry-stage relative mx-auto flex min-h-[calc(100dvh-82px)] max-w-6xl items-center px-5 pb-20 pt-10 sm:px-8">
+        <div className="cherry-orb cherry-orb-one" aria-hidden="true" />
+        <div className="cherry-orb cherry-orb-two" aria-hidden="true" />
+        <div className="relative z-10 grid w-full items-center gap-12 lg:grid-cols-[1fr_.8fr]">
+          <div className="cherry-intro max-w-2xl">
+            <p className="eyebrow mb-6 flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-rose-200"/> Meet beyond the first impression</p>
+            <h1 className="cherry-hero-title">A little<br/>closer to<br/><span>something real.</span></h1>
+            <p className="mt-7 max-w-md text-base leading-7 text-white/60 sm:text-lg">Discover people through the details that make them who they are — their voice, their rituals, their little obsessions.</p>
+            <div className="mt-9 flex flex-wrap items-center gap-4">
+              <Link href="/signup" className="cherry-cta cherry-cta-primary">Join Cherry <ArrowRight className="ml-2 inline" size={15}/></Link>
+              <Link href="/reels" className="cherry-quiet-link">Enter the reels <span aria-hidden="true">↗</span></Link>
+            </div>
+          </div>
+          <div className="cherry-portrait-wrap mx-auto w-full max-w-[390px]">
+            <div className="cherry-portrait">
+              <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=85" alt="Portrait representing a Cherry member" />
+              <div className="cherry-portrait-shade" />
+              <div className="absolute left-5 top-5 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.22em] text-white/80"><span className="h-1.5 w-1.5 rounded-full bg-rose-200"/> Your next chapter</div>
+              <div className="cherry-portrait-copy">
+                <div className="mb-4 flex items-center gap-3">
+                  <span className="cherry-audio-icon"><AudioLines size={21}/></span>
+                  <div><p className="text-sm font-extrabold">A voice. A feeling.</p><p className="mt-1 text-xs text-white/55">Meet the person behind the profile.</p></div>
+                </div>
+                <div className="cherry-wave" aria-hidden="true">{[8,14,6,20,12,25,9,17,28,12,21,7,16,24,10,18,6,14,22,9,17].map((h,i)=><span key={i} style={{height:h}} />)}</div>
+              </div>
+            </div>
+            <div className="cherry-float-note"><span className="cherry-pulse"/> Thoughtfully made for real connection</div>
+          </div>
+        </div>
+      </section>
+      <footer className="mx-auto flex max-w-6xl justify-between border-t border-white/[.08] px-5 py-6 text-[10px] tracking-[.16em] text-white/35 sm:px-8"><span>CHERRY</span><span className="italic tracking-normal">by Harsh and Sam</span><span>EARLY ACCESS</span></footer>
+    </main>
+  );
 }

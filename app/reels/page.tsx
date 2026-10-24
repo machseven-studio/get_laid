@@ -38,11 +38,11 @@ export default function ReelsPage() {
   function toggle(id:string,setter:(v:string[])=>void,current:string[]) {
     setter(current.includes(id)?current.filter(x=>x!==id):[...current,id]);
   }
-  function like(id:string) { sounds.click(); setLiked(v=>v.includes(id)?v.filter(x=>x!==id):[...v,id]); }
+  function like(id:string) {  setLiked(v=>v.includes(id)?v.filter(x=>x!==id):[...v,id]); }
   async function toggleSound(){ const audio=reelAudio.current; if(!audio){setMuted(v=>!v);return;} if(muted){setMuted(false);try{await audio.play();}catch{setToast("Tap sound again to start audio.");}}else{setMuted(true);audio.pause();} }
   function share(name:string) {
-    const text="Meet "+name+" on Spark & Vouch";
-    if(navigator.share) navigator.share({title:"Spark & Vouch",text}).catch(()=>{});
+    const text="Meet "+name+" on Cherry";
+    if(navigator.share) navigator.share({title:"Cherry",text}).catch(()=>{});
     else if(navigator.clipboard) navigator.clipboard.writeText(text).then(()=>setToast("Profile share text copied"));
     else setToast(text);
   }
@@ -78,9 +78,9 @@ export default function ReelsPage() {
           </div>
           <aside className="mb-2 flex shrink-0 flex-col items-center gap-5">
             <button onClick={()=>like(person.id)} aria-label="Like profile" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><Heart size={27} fill={liked.includes(person.id)?"white":"none"} strokeWidth={2.1}/><span className="text-[10px] font-bold">{liked.includes(person.id)?"Liked":"Like"}</span></button>
-            <button onClick={()=>{sounds.click();setCommentFor(person.id);}} aria-label="Open comments" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><MessageCircle size={26}/><span className="text-[10px] font-bold">{(comments[person.id]??[]).length}</span></button>
+            <button onClick={()=>{setCommentFor(person.id);}} aria-label="Open comments" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><MessageCircle size={26}/><span className="text-[10px] font-bold">{(comments[person.id]??[]).length}</span></button>
             <button onClick={()=>share(person.name)} aria-label="Share profile" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><Share2 size={24}/><span className="text-[10px] font-bold">Share</span></button>
-            <button onClick={()=>{sounds.click();toggle(person.id,setSaved,saved);}} aria-label="Save profile" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><Bookmark size={23} fill={saved.includes(person.id)?"white":"none"}/><span className="text-[10px] font-bold">{saved.includes(person.id)?"Saved":"Save"}</span></button>
+            <button onClick={()=>{toggle(person.id,setSaved,saved);}} aria-label="Save profile" className="flex flex-col items-center gap-1.5 drop-shadow-lg"><Bookmark size={23} fill={saved.includes(person.id)?"white":"none"}/><span className="text-[10px] font-bold">{saved.includes(person.id)?"Saved":"Save"}</span></button>
             <div className="mt-1 h-9 w-9 overflow-hidden rounded-xl border border-white/30"><img src={person.image} alt="" className="h-full w-full object-cover"/></div>
           </aside>
         </div>
