@@ -19,11 +19,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return <div className="min-h-screen bg-black text-white">
     <header className="sticky top-0 z-30 border-b border-white/[0.07] bg-black/90 backdrop-blur-xl">
       <div className="mx-auto flex h-[68px] max-w-6xl items-center justify-between px-5 sm:px-8">
-        <Link href="/discover" className="flex items-center gap-2.5" aria-label="Spark and Vouch home">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-black"><Sparkles size={16}/></span>
-          <span className="text-[15px] font-extrabold tracking-[-.05em]">spark<span className="text-white/45"> & </span>vouch</span>
+        <Link href="/discover" className="flex items-center gap-2.5" aria-label="Cherry home">
+          <span className="cherry-mark"><Sparkles size={16}/></span>
+          <span className="cherry-name text-xl">Cherry</span><span className="cherry-byline">by Harsh and Sam</span>
         </Link>
-        <span className="hidden text-[10px] font-semibold uppercase tracking-[.28em] text-white/35 sm:block">Make it feel real</span>
+        <span className="hidden text-[10px] font-semibold uppercase tracking-[.28em] text-white/35 sm:block">A little closer to something real</span>
         <div className="flex items-center gap-3"><Link href="/login" className="text-xs font-bold text-white/50 hover:text-white">Sign in</Link><Link href="/profile" aria-label="Profile" className="grid h-9 w-9 place-items-center rounded-full border border-white/15 text-sm font-bold hover:bg-white/10">S</Link></div>
       </div>
     </header>
