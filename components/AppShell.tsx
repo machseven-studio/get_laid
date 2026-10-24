@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Compass, Heart, MessageCircle, UserRound, Sparkles, Clapperboard, LogIn } from "lucide-react";
-import { useSounds } from "@/components/SoundProvider";
 
 const items = [
   { href: "/discover", label: "Discover", icon: Compass },
@@ -15,7 +14,6 @@ const items = [
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const sounds = useSounds();
   return <div className="min-h-screen bg-black text-white">
     <header className="sticky top-0 z-30 border-b border-white/[0.07] bg-black/90 backdrop-blur-xl">
       <div className="mx-auto flex h-[68px] max-w-6xl items-center justify-between px-5 sm:px-8">
@@ -32,7 +30,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="mx-auto flex max-w-xl items-center justify-around px-3 py-3 sm:rounded-full sm:border sm:border-white/10 sm:bg-white/[0.025]">
         {items.map(({href,label,icon:Icon}) => {
           const active = pathname === href || (href === "/matches" && pathname.startsWith("/chat/"));
-          return <Link key={href} href={href} onClick={()=>sounds.click()} className={`flex min-w-[60px] flex-col items-center gap-1.5 px-3 py-1 text-[10px] font-semibold transition ${active ? "text-white" : "text-white/40 hover:text-white/80"}`} aria-current={active ? "page" : undefined}>
+          return <Link key={href} href={href} className={`flex min-w-[60px] flex-col items-center gap-1.5 px-3 py-1 text-[10px] font-semibold transition ${active ? "text-white" : "text-white/40 hover:text-white/80"}`} aria-current={active ? "page" : undefined}>
             <Icon size={20} strokeWidth={active ? 2.3 : 1.7}/><span>{label}</span>
           </Link>;
         })}
