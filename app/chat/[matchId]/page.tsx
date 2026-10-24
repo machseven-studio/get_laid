@@ -1,23 +1,27 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowLeft, Send, ShieldCheck } from "lucide-react";
-type Message = { id: number; text: string; own: boolean };
+import { AppShell } from "@/components/AppShell";
+import { byId } from "@/lib/demo-data";
+import { ArrowLeft, Send, AudioLines, MoreHorizontal } from "lucide-react";
 
-export default function ChatPage() {
-  const [draft, setDraft] = useState("");
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 1, text: "Hey! I liked your voice note — you sound like someone with good stories.", own: false },
-    { id: 2, text: "Thanks! The best ones usually start with a spontaneous plan.", own: true }
+type Message = { id: number; text: string; own: boolean };
+export default function ChatPage({ params }: { params: { matchId: string } }) {
+  const person = byId(params.matchId);
+  const [draft,setDraft] = useState("");
+  const [messages,setMessages] = useState<Message[]>([
+    {id:1,text:"Hey! I liked your voice note — you sound like someone with good stories.",own:false},
+    {id:2,text:"Thanks! The best ones usually start with a spontaneous plan.",own:true}
   ]);
-  function sendMessage(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault(); const text = draft.trim(); if (!text) return;
-    setMessages(current => [...current, { id: Date.now(), text, own: true }]); setDraft("");
+  function sendMessage(event:React.FormEvent<HTMLFormElement>) {
+    event.preventDefault(); const text=draft.trim(); if(!text) return;
+    setMessages(v=>[...v,{id:Date.now(),text,own:true}]); setDraft("");
   }
-  return <main className="mx-auto flex min-h-screen max-w-2xl flex-col px-4 py-6 sm:px-6">
-    <header className="flex items-center gap-3 border-b border-white/10 pb-5"><Link href="/" aria-label="Back home" className="grid h-10 w-10 place-items-center rounded-full border border-white/10 hover:bg-white/5"><ArrowLeft size={18}/></Link><div className="grid h-10 w-10 place-items-center rounded-full bg-orange-200/15 font-semibold text-orange-100">S</div><div className="flex-1"><h1 className="text-sm font-semibold">Spark connection</h1><p className="mt-1 text-xs text-white/45">Demo conversation</p></div><ShieldCheck size={19} className="text-orange-200"/></header>
-    <div className="my-6 rounded-xl border border-orange-200/15 bg-orange-200/[0.06] p-3 text-xs leading-5 text-white/60">This is a local UI demo. Messages are not saved or sent to another person.</div>
-    <section aria-label="Messages" className="flex-1 space-y-4 py-4">{messages.map(message => <div key={message.id} className={message.own ? "flex justify-end" : "flex justify-start"}><p className={message.own ? "max-w-[85%] rounded-2xl rounded-br-sm bg-orange-200 px-4 py-3 text-sm leading-6 text-zinc-950" : "max-w-[85%] rounded-2xl rounded-bl-sm bg-white/[0.07] px-4 py-3 text-sm leading-6 text-white/85"}>{message.text}</p></div>)}</section>
-    <form onSubmit={sendMessage} className="flex gap-2 border-t border-white/10 pt-5"><label htmlFor="message" className="sr-only">Write a message</label><input id="message" value={draft} onChange={event => setDraft(event.target.value)} placeholder="Write a message..." className="min-w-0 flex-1 rounded-full border border-white/10 bg-white/[0.04] px-4 py-3 text-sm outline-none focus:border-orange-200/60"/><button type="submit" disabled={!draft.trim()} aria-label="Send message" className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-orange-200 text-zinc-950 disabled:opacity-40"><Send size={17}/></button></form>
-  </main>;
+  return <AppShell><div className="mx-auto flex min-h-[65vh] max-w-2xl flex-col">
+    <header className="flex items-center gap-3 border-b border-white/10 pb-5"><Link href="/matches" aria-label="Back to matches" className="text-white/55 hover:text-white"><ArrowLeft size={19}/></Link><img src={person.image} alt="" className="h-11 w-11 rounded-full object-cover"/><div className="min-w-0 flex-1"><h1 className="font-extrabold tracking-tight">{person.name}, {person.age}</h1><p className="mt-1 text-[11px] text-white/40">{person.online?"Online now":person.city+" · "+person.distance}</p></div><button onClick={()=>alert("Demo conversation options")} aria-label="Conversation options" className="text-white/50 hover:text-white"><MoreHorizontal size={20}/></button></header>
+    <div className="my-5 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-white/30"><span className="h-px flex-1 bg-white/10"/><span>A new connection</span><span className="h-px flex-1 bg-white/10"/></div>
+    <div className="flex-1 space-y-4 py-4">{messages.map(m=><div key={m.id} className={m.own?"flex justify-end":"flex justify-start"}><p className={m.own?"max-w-[85%] rounded-2xl rounded-br-sm bg-white px-4 py-3 text-sm leading-6 text-black":"max-w-[85%] rounded-2xl rounded-bl-sm bg-white/[0.08] px-4 py-3 text-sm leading-6 text-white/85"}>{m.text}</p></div>)}</div>
+    <p className="mb-3 text-center text-[10px] text-white/25">Demo mode · Messages are not sent or stored</p>
+    <form onSubmit={sendMessage} className="flex items-center gap-3 border-t border-white/10 pt-4"><button type="button" onClick={()=>alert(person.voice ?? "Voice intro coming soon.")} aria-label="Listen to voice intro" className="text-white/50 hover:text-white"><AudioLines size={20}/></button><label htmlFor="message" className="sr-only">Write a message</label><input id="message" value={draft} onChange={e=>setDraft(e.target.value)} placeholder="Say something real…" className="min-w-0 flex-1 bg-transparent py-3 text-sm outline-none placeholder:text-white/30"/><button type="submit" disabled={!draft.trim()} aria-label="Send message" className="grid h-10 w-10 place-items-center rounded-full bg-white text-black disabled:opacity-30"><Send size={16}/></button></form>
+  </div></AppShell>;
 }
