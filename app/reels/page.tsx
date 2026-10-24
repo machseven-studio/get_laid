@@ -41,8 +41,8 @@ export default function ReelsPage() {
   function like(id:string) { sounds.click(); setLiked(v=>v.includes(id)?v.filter(x=>x!==id):[...v,id]); }
   async function toggleSound(){ const audio=reelAudio.current; if(!audio){setMuted(v=>!v);return;} if(muted){setMuted(false);try{await audio.play();}catch{setToast("Tap sound again to start audio.");}}else{setMuted(true);audio.pause();} }
   function share(name:string) {
-    const text="Meet "+name+" on Spark & Vouch";
-    if(navigator.share) navigator.share({title:"Spark & Vouch",text}).catch(()=>{});
+    const text="Meet "+name+" on Cherry";
+    if(navigator.share) navigator.share({title:"Cherry",text}).catch(()=>{});
     else if(navigator.clipboard) navigator.clipboard.writeText(text).then(()=>setToast("Profile share text copied"));
     else setToast(text);
   }
