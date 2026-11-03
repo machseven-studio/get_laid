@@ -3,8 +3,14 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { ArrowRight, AudioLines, Sparkles } from "lucide-react";
+import { createClient } from "@/lib/auth/client";
+
+const authClient = createClient();
 
 export default function HomePage() {
+  const { data: session, isPending } = authClient.useSession();
+  const signedIn = Boolean(session?.user);
+
   useEffect(() => {
     document.title = "Cherry — by Harsh and Sam";
   }, []);
@@ -18,8 +24,15 @@ export default function HomePage() {
           <span className="cherry-byline">by Harsh and Sam</span>
         </Link>
         <div className="flex items-center gap-5">
-          <Link href="/login" className="hidden text-xs font-bold text-white/65 transition hover:text-white sm:block">Sign in</Link>
-          <Link href="/signup" className="cherry-cta">Create account <ArrowRight className="ml-1 inline" size={14}/></Link>
+          {!isPending && !signedIn && (
+            <>
+              <Link href="/login" className="hidden text-xs font-bold text-white/65 transition hover:text-white sm:block">Sign in</Link>
+              <Link href="/signup" className="cherry-cta">Create account <ArrowRight className="ml-1 inline" size={14}/></Link>
+            </>
+          )}
+          {signedIn && (
+            <Link href="/discover" className="cherry-cta">Open Cherry <ArrowRight className="ml-1 inline" size={14}/></Link>
+          )}
         </div>
       </header>
 
@@ -32,7 +45,7 @@ export default function HomePage() {
             <h1 className="cherry-hero-title">A little<br/>closer to<br/><span>something real.</span></h1>
             <p className="mt-7 max-w-md text-base leading-7 text-white/60 sm:text-lg">Discover people through the details that make them who they are — their voice, their rituals, their little obsessions.</p>
             <div className="mt-9 flex flex-wrap items-center gap-4">
-              <Link href="/signup" className="cherry-cta cherry-cta-primary">Join Cherry <ArrowRight className="ml-2 inline" size={15}/></Link>
+              <Link href={signedIn ? "/discover" : "/signup"} className="cherry-cta cherry-cta-primary">{signedIn ? "Go to Discover" : "Join Cherry"} <ArrowRight className="ml-2 inline" size={15}/></Link>
               <Link href="/reels" className="cherry-quiet-link">Enter the reels <span aria-hidden="true">↗</span></Link>
             </div>
           </div>
