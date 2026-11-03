@@ -32,12 +32,12 @@ Set `DATABASE_URL`, `NEON_AUTH_BASE_URL` and `NEON_AUTH_COOKIE_SECRET` in Render
 `supabase/schema.sql` is the initial schema. The migration `supabase/migrations/20261028_market_foundation.sql` adds profile fields, likes, blocks, reports and server-validated RPCs for mutual matching and message creation. Review SQL and run it in staging before production. Existing tables may need reconciliation if your live database has drifted from this repository.
 
 ## Release checklist — do not skip
-This repository is still a **pitch-ready prototype, not yet a verified production dating service**. The UI includes demo profiles and some local-only state; those screens are not automatically backed by the database. Before accepting real members:
-1. Wire every discover/likes/matches/chat/profile action to Supabase and remove demo fallbacks from production.
+This repository is still a **pitch-ready prototype, not yet a verified production dating service**. Neon Auth is wired into the login and signup forms, but discovery, likes, matches, chat and profile screens still use demo data/local state. The files under `supabase/` are legacy Neon SQL and are **not ready to run unchanged on Neon**. Before accepting real members:
+1. Migrate the legacy schema to Neon Postgres, then wire every discover/likes/matches/chat/profile action to authenticated Neon-backed queries and remove demo fallbacks from production.
 2. Build and test account/profile creation, age gating, email confirmation, password reset, session expiry and account deletion.
 3. Add media upload/storage policies, image validation, explicit audio-recording consent, and user-controlled deletion.
 4. Add report/block UI, moderation queues, rate limits, abuse detection, and an incident-response owner.
-5. Review and test every RLS policy and RPC using separate user accounts; add automated tests and CI.
+5. Review and test every database permission/policy and server-authorized write path using separate user accounts; add automated tests and CI.
 6. Replace draft Terms/Privacy with jurisdiction-appropriate legal review; document retention, consent, safety and data deletion.
 7. Add error monitoring, backups, analytics consent, accessibility checks, performance testing and an operational support process.
 8. Complete end-to-end tests on mobile and desktop and verify the Render production build before launch.
