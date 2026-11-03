@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Compass, Heart, MessageCircle, UserRound, Sparkles, Clapperboard, LogIn } from "lucide-react";
+import { createClient } from "@/lib/auth/client";
+
+const authClient = createClient();
 
 const items = [
   { href: "/discover", label: "Discover", icon: Compass },
@@ -14,6 +17,11 @@ const items = [
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { data: session, isPending } = authClient.useSession();
+  const signedIn = Boolean(session?.user);
+  const displayName = session?.user?.name || session?.user?.email || "Profile";
+  const initial = displayName.trim().charAt(0).toUpperCase() || "S";
+
   return <div className="min-h-screen bg-black text-white">
     <header className="sticky top-0 z-30 border-b border-white/[0.07] bg-black/90 backdrop-blur-xl">
       <div className="mx-auto flex h-[68px] max-w-6xl items-center justify-between px-5 sm:px-8">
@@ -22,7 +30,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <span className="cherry-name text-xl">Cherry</span><span className="cherry-byline">by Harsh and Sam</span>
         </Link>
         <span className="hidden text-[10px] font-semibold uppercase tracking-[.28em] text-white/35 sm:block">A little closer to something real</span>
-        <div className="flex items-center gap-3"><Link href="/login" className="text-xs font-bold text-white/50 hover:text-white">Sign in</Link><Link href="/profile" aria-label="Profile" className="grid h-9 w-9 place-items-center rounded-full border border-white/15 text-sm font-bold hover:bg-white/10">S</Link></div>
+        <div className="flex items-center gap-3">
+          {!isPending && !signedIn && (
+            <Link href="/login" className="inline-flex items-center gap-1.5 text-xs font-bold text-white/60 transition hover:text-white">
+              <LogIn size={14}/> Sign in
+            </Link>
+          )}
+          {signedIn && (
+            <Link href="/profile" aria-label={`Open ${displayName} profile`} title={displayName} className="grid h-9 w-9 place-items-center rounded-full border border-rose-200/35 bg-rose-200/10 text-sm font-bold text-rose-100 transition hover:bg-rose-200/20">
+              {initial}
+            </Link>
+          )}
+        </div>
       </div>
     </header>
     <main className="mx-auto min-h-[calc(100dvh-140px)] max-w-6xl px-5 pb-28 pt-7 sm:px-8 sm:pb-12">{children}</main>
