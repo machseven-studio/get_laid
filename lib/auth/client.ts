@@ -1,4 +1,4 @@
-import { createAuthClient, SupabaseAuthAdapter } from "@neondatabase/auth";
+import { createAuthClient } from "better-auth/react";
 
 const authUrl = process.env.NEXT_PUBLIC_NEON_AUTH_URL;
 
@@ -6,15 +6,14 @@ if (!authUrl) {
   throw new Error("Missing NEON_AUTH_BASE_URL. Add it to Render and redeploy.");
 }
 
-// Supabase-compatible adapter keeps the existing email/password sign-in call.
+// Neon Auth is powered by Better Auth. Use its browser client directly;
+// this avoids the Neon Next.js adapter's Next.js 16 peer dependency.
 export function createClient() {
-  return createAuthClient(authUrl, {
-    adapter: SupabaseAuthAdapter(),
+  return createAuthClient({
+    baseURL: authUrl,
   });
 }
 
-// Use the native Better Auth API for sign-up so email-verification flows can
-// return successfully even when no session is issued until the email is verified.
 export function createNeonAuthClient() {
-  return createAuthClient(authUrl);
+  return createClient();
 }
