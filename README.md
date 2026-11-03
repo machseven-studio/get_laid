@@ -1,10 +1,10 @@
 # Cherry — by Harsh and Sam
 
-A mobile-first dating app prototype built with Next.js 14, TypeScript, Tailwind CSS, Framer Motion and Supabase. The product direction is voice-first discovery: profiles, prompts, interests, likes, mutual matches and conversations.
+A mobile-first dating app prototype built with Next.js 14, TypeScript, Tailwind CSS, Framer Motion and Neon Auth / Neon Postgres. The product direction is voice-first discovery: profiles, prompts, interests, likes, mutual matches and conversations.
 
 ## Routes
 - `/` — branded landing page
-- `/signup`, `/login`, `/auth/callback` — Supabase Auth entry points
+- `/signup`, `/login`, `/auth/callback` — Neon Auth entry points
 - `/discover` — profile discovery and like/pass demo
 - `/reels` — full-screen profile feed
 - `/likes`, `/matches`, `/chat/[matchId]` — prototype likes, matches and chat
@@ -19,14 +19,14 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` for Supabase Auth. These are public client values; never place a service-role key in a `NEXT_PUBLIC_*` variable or commit secrets.
+Set `DATABASE_URL`, `NEON_AUTH_BASE_URL` and `NEON_AUTH_COOKIE_SECRET` in Render. The Neon Auth URL is public; the database URL and cookie secret must remain server-only. Generate the cookie secret with `openssl rand -base64 32`.
 
 ## Render
 - Build command: `npm install && npm run build`
 - Start command: `npm start`
-- Add the two Supabase public environment variables in Render.
-- In Supabase Auth, configure the production site URL and allowed redirect URL ending in `/auth/callback`.
-- Apply migrations to a staging project first, inspect policies and test with two separate accounts, then plan production rollout.
+- Add `DATABASE_URL`, `NEON_AUTH_BASE_URL` and `NEON_AUTH_COOKIE_SECRET` in Render.
+- In Neon Auth, configure the production application URL and the email verification redirect to your Cherry production URL ending in `/auth/callback`.
+- Apply the SQL migrations to a staging Neon database first, inspect policies and test with two separate accounts, then plan production rollout.
 
 ## Database notes
 `supabase/schema.sql` is the initial schema. The migration `supabase/migrations/20261028_market_foundation.sql` adds profile fields, likes, blocks, reports and server-validated RPCs for mutual matching and message creation. Review SQL and run it in staging before production. Existing tables may need reconciliation if your live database has drifted from this repository.
